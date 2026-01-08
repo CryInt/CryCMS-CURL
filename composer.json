@@ -1,0 +1,28 @@
+{
+    "name": "cry/cry-cms-curl",
+    "description": "Facade for PHP cURL",
+    "type": "library",
+    "version": "0.1",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "CryCMS\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Dmitrii (Cry) Rudakovskii",
+            "email": "cry.int@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=7.4",
+	    "ext-curl": "*",
+        "ext-json": "*",
+        "ext-fileinfo": "*"
+    },
+    "require-dev": {
+        "ext-dom": "*",
+        "phpunit/phpunit": "9.5"
+    }
+}
