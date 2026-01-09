@@ -62,7 +62,7 @@ $response = CURL::get('https://postman-echo.com/get')
     ->send();
 ```
 
-### Answer is always DTO object
+### Send method response always a DTO object
 
 ```php
 CURLResponseDTO Object
@@ -75,4 +75,10 @@ CURLResponseDTO Object
     [contentType] => <answer content type>
     [body] => <response body>
 )
+```
+
+### UnitTest
+
+```bash
+$ ./vendor/bin/phpunit
 ```

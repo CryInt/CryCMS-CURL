@@ -1,7 +1,7 @@
 <?php
 namespace CryCMS\DTO;
 
-class CURLResponseDTO extends DTO
+class CUrlResponseDTO extends CUrlDTO
 {
     public string $location;
     public string $method;

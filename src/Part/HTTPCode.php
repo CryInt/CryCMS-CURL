@@ -1,5 +1,5 @@
 <?php
-namespace CryCMS;
+namespace CryCMS\Part;
 
 class HTTPCode
 {
