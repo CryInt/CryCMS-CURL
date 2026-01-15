@@ -1,17 +1,17 @@
 <?php
-namespace CryCMS\Builder;
+namespace CryCMS\CURL\Builder;
 
-use CryCMS\CUrl;
-use CryCMS\DTO\CUrlConfigDTO;
-use CryCMS\Part\ContentType;
-use CryCMS\Part\CUrlHelper;
+use CryCMS\CURL\CURL;
+use CryCMS\CURL\DTO\ConfigDTO;
+use CryCMS\CURL\Part\ContentType;
+use CryCMS\CURL\Part\CUrlHelper;
 use CURLFile;
 
-class CUrlBuilderBash extends CUrlBuilder
+class BuilderBash extends Builder
 {
     protected array $content = [];
 
-    public function __construct(CUrlConfigDTO $config)
+    public function __construct(ConfigDTO $config)
     {
         $location = CUrlHelper::makeLocation($config);
         $this->content[] = "curl '" . $location . "'";
@@ -77,7 +77,7 @@ class CUrlBuilderBash extends CUrlBuilder
 
     protected function setPostData(): void
     {
-        if ($this->config->method !== CUrl::POST) {
+        if ($this->config->method !== CURL::POST) {
             return;
         }
 

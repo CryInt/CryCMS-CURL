@@ -2,11 +2,11 @@
     "name": "cry/cry-cms-curl",
     "description": "Facade for PHP cURL",
     "type": "library",
-    "version": "0.2.1",
+    "version": "0.3.0",
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "CryCMS\\": "src/"
+            "CryCMS\\CURL\\": "src/"
         }
     },
     "authors": [

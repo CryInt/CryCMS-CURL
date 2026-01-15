@@ -1,9 +1,9 @@
 <?php
-namespace CryCMS\Part;
+namespace CryCMS\CURL\Part;
 
 class HTTPCode
 {
-    const LIST = [
+    public const LIST = [
         self::PROCESSING => "Processing",
 
         self::OK => "OK",
@@ -34,32 +34,32 @@ class HTTPCode
         self::SERVICE_UNAVAILABLE => "Service Unavailable",
     ];
 
-    const PROCESSING = 102;
+    public const PROCESSING = 102;
 
-    const OK = 200;
-    const CREATED = 201;
-    const ACCEPTED = 202;
-    const PARTIAL_CONTENT = 206;
+    public const OK = 200;
+    public const CREATED = 201;
+    public const ACCEPTED = 202;
+    public const PARTIAL_CONTENT = 206;
 
-    const MOVED_PERMANENTLY = 301;
-    const FOUND = 302;
-    const NOT_MODIFIED = 304;
-    const TEMPORARY_REDIRECT = 307;
-    const PERMANENT_REDIRECT = 308;
+    public const MOVED_PERMANENTLY = 301;
+    public const FOUND = 302;
+    public const NOT_MODIFIED = 304;
+    public const TEMPORARY_REDIRECT = 307;
+    public const PERMANENT_REDIRECT = 308;
 
-    const BAD_REQUEST = 400;
-    const UNAUTHORIZED = 401;
-    const FORBIDDEN = 403;
-    const NOT_FOUND = 404;
-    const METHOD_NOT_ALLOWED = 405;
-    const NOT_ACCEPTABLE = 406;
-    const REQUEST_TIMEOUT = 408;
-    const CONFLICT = 409;
-    const REQUEST_ENTITY_TOO_LARGE = 413;
-    const UNSUPPORTED_MEDIA_TYPE = 415;
+    public const BAD_REQUEST = 400;
+    public const UNAUTHORIZED = 401;
+    public const FORBIDDEN = 403;
+    public const NOT_FOUND = 404;
+    public const METHOD_NOT_ALLOWED = 405;
+    public const NOT_ACCEPTABLE = 406;
+    public const REQUEST_TIMEOUT = 408;
+    public const CONFLICT = 409;
+    public const REQUEST_ENTITY_TOO_LARGE = 413;
+    public const UNSUPPORTED_MEDIA_TYPE = 415;
 
-    const INTERNAL_SERVER_ERROR = 500;
-    const NOT_IMPLEMENTED = 501;
-    const BAD_GATEWAY = 502;
-    const SERVICE_UNAVAILABLE = 503;
+    public const INTERNAL_SERVER_ERROR = 500;
+    public const NOT_IMPLEMENTED = 501;
+    public const BAD_GATEWAY = 502;
+    public const SERVICE_UNAVAILABLE = 503;
 }

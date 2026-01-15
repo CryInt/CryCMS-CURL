@@ -1,24 +1,24 @@
 <?php
-namespace CryCMS\Builder;
+namespace CryCMS\CURL\Builder;
 
-use CryCMS\CUrl;
-use CryCMS\DTO\CUrlConfigDTO;
-use CryCMS\DTO\CUrlResponseDTO;
-use CryCMS\Part\ContentType;
-use CryCMS\Part\CUrlHelper;
-use CryCMS\Part\HTTPCode;
+use CryCMS\CURL\CURL;
+use CryCMS\CURL\DTO\ConfigDTO;
+use CryCMS\CURL\DTO\ResponseDTO;
+use CryCMS\CURL\Part\ContentType;
+use CryCMS\CURL\Part\CUrlHelper;
+use CryCMS\CURL\Part\HTTPCode;
 
-class CUrlBuilderObject extends CUrlBuilder
+class BuilderObject extends Builder
 {
     protected $curlHandle;
 
-    public function __construct(CUrlConfigDTO $config)
+    public function __construct(ConfigDTO $config)
     {
         $this->curlHandle = curl_init();
         parent::__construct($config);
     }
 
-    public function execute(): CUrlResponseDTO
+    public function execute(): ResponseDTO
     {
         $this->setInline();
 
@@ -38,7 +38,7 @@ class CUrlBuilderObject extends CUrlBuilder
 
         curl_close($this->curlHandle);
 
-        return new CUrlResponseDTO([
+        return new ResponseDTO([
             'location' => $location,
             'method' => $this->config->method,
             'isSuccess' => $httpCode >= 200 && $httpCode < 300,

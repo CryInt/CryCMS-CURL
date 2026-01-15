@@ -1,10 +1,10 @@
 <?php
-namespace CryCMS\DTO;
+namespace CryCMS\CURL\DTO;
 
 /**
  * @property array $defaultProperties
  */
-abstract class CUrlDTO
+abstract class DTO
 {
     protected array $defaultProperties = [];
 
@@ -52,7 +52,7 @@ abstract class CUrlDTO
                 continue;
             }
 
-            if ($value instanceof CURLDTO) {
+            if ($value instanceof self) {
                 $result[$property] = $value->array();
                 continue;
             }

@@ -1,14 +1,14 @@
 <?php
-namespace CryCMS\Part;
+namespace CryCMS\CURL\Part;
 
-use CryCMS\CUrl;
-use CryCMS\DTO\CUrlConfigDTO;
+use CryCMS\CURL\CURL;
+use CryCMS\CURL\DTO\ConfigDTO;
 
 class CUrlHelper
 {
-    public static function makeLocation(CUrlConfigDTO $config): string
+    public static function makeLocation(ConfigDTO $config): string
     {
-        if ($config->method === CUrl::GET) {
+        if ($config->method === CURL::GET) {
             $urlParts = parse_url($config->location);
             if (isset($urlParts['query'])) {
                 parse_str($urlParts['query'], $params);

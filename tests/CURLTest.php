@@ -1,12 +1,12 @@
 <?php
 declare(strict_types=1);
 
-use CryCMS\CUrl;
-use CryCMS\Part\ContentType;
-use CryCMS\Part\HTTPCode;
+use CryCMS\CURL\CURL;
+use CryCMS\CURL\Part\ContentType;
+use CryCMS\CURL\Part\HTTPCode;
 use PHPUnit\Framework\TestCase;
 
-final class CUrlTest extends TestCase
+final class CURLTest extends TestCase
 {
     protected const CODE_TEST_LIST = [
         HTTPCode::OK,
@@ -17,7 +17,7 @@ final class CUrlTest extends TestCase
 
     public function testHeaders(): void
     {
-        $query = CUrl::get('https://postman-echo.com/headers')
+        $query = CURL::get('https://postman-echo.com/headers')
             ->authorizationBearer('TOKEN-123')
             ->userAgent('Just Agent');
 
@@ -50,7 +50,7 @@ final class CUrlTest extends TestCase
     public function testCode(): void
     {
         foreach (self::CODE_TEST_LIST as $code) {
-            $query = CUrl::code('https://postman-echo.com/status/' . $code, 10);
+            $query = CURL::code('https://postman-echo.com/status/' . $code, 10);
             $response = $query->send();
 
             $this->assertIsBool($response->isSuccess);
@@ -66,7 +66,7 @@ final class CUrlTest extends TestCase
 
     public function testGet(): void
     {
-        $query = CUrl::get('https://postman-echo.com/get')
+        $query = CURL::get('https://postman-echo.com/get')
             ->data('test', '123')
             ->data('array', [1, 2, 3]);
 
@@ -94,7 +94,7 @@ final class CUrlTest extends TestCase
 
     public function testPost(): void
     {
-        $query = CUrl::post('https://postman-echo.com/post')
+        $query = CURL::post('https://postman-echo.com/post')
             ->data('test', '123');
 
         $response = $query->send();
@@ -117,7 +117,7 @@ final class CUrlTest extends TestCase
 
     public function testPostFormUrlencoded(): void
     {
-        $query = CUrl::post('https://postman-echo.com/post')
+        $query = CURL::post('https://postman-echo.com/post')
             ->data('test', '123')
             ->header('Content-Type', ContentType::APPLICATION_X_WWW_FORM_URLENCODED);
 
@@ -142,7 +142,7 @@ final class CUrlTest extends TestCase
 
     public function testJson(): void
     {
-        $query = CUrl::json('https://postman-echo.com/post')
+        $query = CURL::json('https://postman-echo.com/post')
             ->data('test', '123');
 
         $response = $query->send();
@@ -169,7 +169,7 @@ final class CUrlTest extends TestCase
         $tmpFile = tempnam(sys_get_temp_dir(), 'TestFile_') . '.txt';
         file_put_contents($tmpFile, '1234');
 
-        $query = CUrl::post('https://postman-echo.com/post')
+        $query = CURL::post('https://postman-echo.com/post')
             ->data([
                 'field1' => 'V1',
                 'field2' => 'V2',
@@ -195,7 +195,7 @@ final class CUrlTest extends TestCase
 
     public function testSSL(): void
     {
-        $query = CUrl::code('https://expired-rsa-dv.ssl.com', 10);
+        $query = CURL::code('https://expired-rsa-dv.ssl.com', 10);
         $response = $query->send();
         $this->assertFalse($response->isSuccess);
 
@@ -204,7 +204,7 @@ final class CUrlTest extends TestCase
         $this->assertNotEmpty($responseBash);
         $this->assertEquals($response->httpCode, $responseBash);
 
-        $query = CUrl::code('https://expired-rsa-dv.ssl.com', 10)->ssl(false);
+        $query = CURL::code('https://expired-rsa-dv.ssl.com', 10)->ssl(false);
         $response = $query->send();
         $this->assertTrue($response->isSuccess);
 

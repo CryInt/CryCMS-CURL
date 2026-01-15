@@ -1,23 +1,23 @@
 <?php
-namespace CryCMS;
+namespace CryCMS\CURL;
 
-use CryCMS\Builder\CUrlBuilderBash;
-use CryCMS\Builder\CUrlBuilderObject;
-use CryCMS\DTO\CUrlConfigDTO;
-use CryCMS\DTO\CUrlResponseDTO;
-use CryCMS\Part\ContentType;
+use CryCMS\CURL\Builder\BuilderBash;
+use CryCMS\CURL\Builder\BuilderObject;
+use CryCMS\CURL\DTO\ConfigDTO;
+use CryCMS\CURL\DTO\ResponseDTO;
+use CryCMS\CURL\Part\ContentType;
 use CURLFile;
 
-class CUrl
+class CURL
 {
     public const GET = 'GET';
     public const POST = 'POST';
 
-    protected CUrlConfigDTO $config;
+    protected ConfigDTO $config;
 
     protected function __construct(string $location, string $method = self::GET)
     {
-        $this->config = new CUrlConfigDTO();
+        $this->config = new ConfigDTO();
         $this->config->setLocation($location);
         $this->config->setMethod($method);
     }
@@ -112,13 +112,13 @@ class CUrl
         return $this;
     }
 
-    public function send(): CUrlResponseDTO
+    public function send(): ResponseDTO
     {
-        return (new CUrlBuilderObject($this->config))->execute();
+        return (new BuilderObject($this->config))->execute();
     }
 
     public function bash(bool $full = false): string
     {
-        return (new CUrlBuilderBash($this->config))->execute($full);
+        return (new BuilderBash($this->config))->execute($full);
     }
 }

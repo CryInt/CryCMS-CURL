@@ -1,8 +1,7 @@
 <?php
-namespace CryCMS\DTO;
+namespace CryCMS\CURL\DTO;
 
-use CryCMS\CUrl;
-use InvalidArgumentException;
+use CryCMS\CURL\CURL;
 
 /**
  * @property string $location
@@ -17,10 +16,10 @@ use InvalidArgumentException;
  * @property bool $returnTransfer
  * @property bool $noBody
  */
-class CUrlConfigDTO extends CUrlDTO
+class ConfigDTO extends DTO
 {
     protected string $location;
-    protected string $method = CUrl::GET;
+    protected string $method = CURL::GET;
     protected array $headers = [];
     protected string $userAgent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.1.4322; CryCMS cURL Facade)';
     protected array $data = [];
