@@ -7,6 +7,7 @@ use CryCMS\CURL\CURL;
  * @property string $location
  * @property string $method
  * @property array $headers
+ * @property ?string $cookieFile
  * @property string $userAgent
  * @property array $data
  * @property int $connectTimeout
@@ -21,6 +22,7 @@ class ConfigDTO extends DTO
     protected string $location;
     protected string $method = CURL::GET;
     protected array $headers = [];
+    protected ?string $cookieFile = null;
     protected string $userAgent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.1.4322; CryCMS cURL Facade)';
     protected array $data = [];
     protected int $connectTimeout = 300;
@@ -57,14 +59,19 @@ class ConfigDTO extends DTO
         $this->headers[$key] = $value;
     }
 
-    public function setUserAgent(string $userAgent): void
-    {
-        $this->userAgent = $userAgent;
-    }
-
     public function flushHeaders(): void
     {
         $this->headers = [];
+    }
+
+    public function setCookieFile(string $filePath): void
+    {
+        $this->cookieFile = $filePath;
+    }
+
+    public function setUserAgent(string $userAgent): void
+    {
+        $this->userAgent = $userAgent;
     }
 
     public function setData($key, $value): void

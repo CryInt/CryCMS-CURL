@@ -4,7 +4,7 @@ namespace CryCMS\CURL\Builder;
 use CryCMS\CURL\CURL;
 use CryCMS\CURL\DTO\ConfigDTO;
 use CryCMS\CURL\Part\ContentType;
-use CryCMS\CURL\Part\CUrlHelper;
+use CryCMS\CURL\Part\Helper;
 use CURLFile;
 
 class BuilderBash extends Builder
@@ -13,7 +13,7 @@ class BuilderBash extends Builder
 
     public function __construct(ConfigDTO $config)
     {
-        $location = CUrlHelper::makeLocation($config);
+        $location = Helper::makeLocation($config);
         $this->content[] = "curl '" . $location . "'";
 
         parent::__construct($config);
@@ -36,6 +36,11 @@ class BuilderBash extends Builder
 
         if ($this->checkPropertyChange('followLocation') === false) {
             $this->content[] = "--location";
+        }
+
+        if ($this->checkPropertyChange('cookieFile')) {
+            $this->content[] = "--cookie " . $this->config->cookieFile;
+            $this->content[] = "--cookie-jar " . $this->config->cookieFile;
         }
 
         if ($this->checkPropertyChange('sslVerify')) {
@@ -77,7 +82,7 @@ class BuilderBash extends Builder
 
     protected function setPostData(): void
     {
-        if ($this->config->method !== CURL::POST) {
+        if ($this->config->method === CURL::GET) {
             return;
         }
 

@@ -8,12 +8,84 @@ use PHPUnit\Framework\TestCase;
 
 final class CURLTest extends TestCase
 {
+    protected static string $cookieFile;
+    protected static string $cookieFileBash;
+
     protected const CODE_TEST_LIST = [
         HTTPCode::OK,
         HTTPCode::BAD_REQUEST,
         HTTPCode::FORBIDDEN,
         HTTPCode::NOT_FOUND,
     ];
+
+    public static function setUpBeforeClass(): void
+    {
+        self::$cookieFile = tempnam(sys_get_temp_dir(), 'TestCookie_') . '.txt';
+        self::$cookieFileBash = tempnam(sys_get_temp_dir(), 'TestCookie_') . '.txt';
+        parent::setUpBeforeClass();
+    }
+
+    public function testCookieFileSet(): void
+    {
+        $query = CURL::get('https://postman-echo.com/cookies/set')
+            ->cookieFile(self::$cookieFile)
+            ->data(['foo1' => 'bar1', 'foo2' => 'bar2']);
+
+        $response = $query->send();
+
+        $this->assertEquals(HTTPCode::OK, $response->httpCode);
+        $this->assertNotEmpty($response->body);
+        $this->assertIsString($response->body);
+        $this->assertFileExists(self::$cookieFile);
+
+        try {
+            $data = json_decode($response->body, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            $this->fail($e->getMessage());
+        }
+
+        $this->assertIsArray($data['cookies']);
+        $this->assertArrayHasKey('foo1', $data['cookies']);
+        $this->assertEquals('bar1', $data['cookies']['foo1']);
+        $this->assertArrayHasKey('foo2', $data['cookies']);
+        $this->assertEquals('bar2', $data['cookies']['foo2']);
+
+        $bash = $query->cookieFile(self::$cookieFileBash)->bash(true);
+        $responseBash = shell_exec($bash);
+        $this->assertNotEmpty($responseBash);
+        $this->assertFileExists(self::$cookieFileBash);
+        $this->assertEquals($this->removeDynamicResponse($response->body), $this->removeDynamicResponse($responseBash));
+    }
+
+    public function testCookieFileGet(): void
+    {
+        $query = CURL::get('https://postman-echo.com/cookies')
+            ->cookieFile(self::$cookieFile);
+
+        $response = $query->send();
+
+        $this->assertEquals(HTTPCode::OK, $response->httpCode);
+        $this->assertNotEmpty($response->body);
+        $this->assertIsString($response->body);
+
+        try {
+            $data = json_decode($response->body, true, 512, JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            $this->fail($e->getMessage());
+        }
+
+        $this->assertIsArray($data['cookies']);
+        $this->assertArrayHasKey('foo1', $data['cookies']);
+        $this->assertEquals('bar1', $data['cookies']['foo1']);
+        $this->assertArrayHasKey('foo2', $data['cookies']);
+        $this->assertEquals('bar2', $data['cookies']['foo2']);
+
+        $bash = $query->cookieFile(self::$cookieFileBash)->bash(true);
+        $responseBash = shell_exec($bash);
+        $this->assertNotEmpty($responseBash);
+        $this->assertFileExists(self::$cookieFileBash);
+        $this->assertEquals($this->removeDynamicResponse($response->body), $this->removeDynamicResponse($responseBash));
+    }
 
     public function testHeaders(): void
     {
@@ -108,6 +180,85 @@ final class CURLTest extends TestCase
         $this->assertIsArray($data['form']);
         $this->assertArrayHasKey('test', $data['form']);
         $this->assertEquals('123', $data['form']['test']);
+
+        $bash = $query->bash(true);
+        $responseBash = shell_exec($bash);
+        $this->assertNotEmpty($responseBash);
+        $this->assertEquals($this->removeDynamicResponse($response->body), $this->removeDynamicResponse($responseBash));
+    }
+
+    public function testPut(): void
+    {
+        $query = CURL::put('https://postman-echo.com/put')
+            ->data('test', '123');
+
+        $response = $query->send();
+
+        $this->assertEquals(HTTPCode::OK, $response->httpCode);
+        $this->assertNotEmpty($response->body);
+        $this->assertIsString($response->body);
+
+        $data = json_decode($response->body, true);
+
+        $this->assertIsArray($data['form']);
+        $this->assertArrayHasKey('test', $data['form']);
+        $this->assertEquals('123', $data['form']['test']);
+
+        $bash = $query->bash(true);
+        $responseBash = shell_exec($bash);
+        $this->assertNotEmpty($responseBash);
+        $this->assertEquals($this->removeDynamicResponse($response->body), $this->removeDynamicResponse($responseBash));
+    }
+
+    public function testPatch(): void
+    {
+        $query = CURL::patch('https://postman-echo.com/patch?id=69')
+            ->data('test', '123');
+
+        $response = $query->send();
+
+        $this->assertEquals(HTTPCode::OK, $response->httpCode);
+        $this->assertNotEmpty($response->body);
+        $this->assertIsString($response->body);
+
+        $data = json_decode($response->body, true);
+
+        $this->assertIsArray($data['args']);
+
+        $this->assertArrayHasKey('id', $data['args']);
+        $this->assertEquals('69', $data['args']['id']);
+
+        $this->assertIsArray($data['form']);
+        $this->assertArrayHasKey('test', $data['form']);
+        $this->assertEquals('123', $data['form']['test']);
+
+        $bash = $query->bash(true);
+        $responseBash = shell_exec($bash);
+        $this->assertNotEmpty($responseBash);
+        $this->assertEquals($this->removeDynamicResponse($response->body), $this->removeDynamicResponse($responseBash));
+    }
+
+    public function testDelete(): void
+    {
+        $query = CURL::delete('https://postman-echo.com/delete?id=1')
+            ->data('test', '444');
+
+        $response = $query->send();
+
+        $this->assertEquals(HTTPCode::OK, $response->httpCode);
+        $this->assertNotEmpty($response->body);
+        $this->assertIsString($response->body);
+
+        $data = json_decode($response->body, true);
+
+        $this->assertIsArray($data['args']);
+
+        $this->assertArrayHasKey('id', $data['args']);
+        $this->assertEquals('1', $data['args']['id']);
+
+        $this->assertIsArray($data['form']);
+        $this->assertArrayHasKey('test', $data['form']);
+        $this->assertEquals('444', $data['form']['test']);
 
         $bash = $query->bash(true);
         $responseBash = shell_exec($bash);
@@ -217,6 +368,8 @@ final class CURLTest extends TestCase
     protected function removeDynamicResponse(string $content): string
     {
         $content = preg_replace('/"content-length":"\d+"/', '"content-length":"~"', $content);
+        $content = preg_replace('/"_cfuvid":"[0-9a-zA-Z.\\-_]+"/', '"_cfuvid":"~"', $content);
+        $content = preg_replace('/"__cf_bm":"[0-9a-zA-Z.\\-_]+"/', '"__cf_bm":"~"', $content);
         return preg_replace('/=-{4,}[a-z0-9]+/', '', $content);
     }
 }

@@ -12,6 +12,9 @@ class CURL
 {
     public const GET = 'GET';
     public const POST = 'POST';
+    public const PUT = 'PUT';
+    public const PATCH = 'PATCH';
+    public const DELETE = 'DELETE';
 
     protected ConfigDTO $config;
 
@@ -30,6 +33,21 @@ class CURL
     public static function post(string $location): self
     {
         return new self($location, self::POST);
+    }
+
+    public static function put(string $location): self
+    {
+        return new self($location, self::PUT);
+    }
+
+    public static function patch(string $location): self
+    {
+        return new self($location, self::PATCH);
+    }
+
+    public static function delete(string $location): self
+    {
+        return new self($location, self::DELETE);
     }
 
     public static function json(string $location): self
@@ -79,6 +97,12 @@ class CURL
     public function header(string $key, string $value): self
     {
         $this->config->setHeader($key, $value);
+        return $this;
+    }
+
+    public function cookieFile(string $filePath): self
+    {
+        $this->config->setCookieFile($filePath);
         return $this;
     }
 

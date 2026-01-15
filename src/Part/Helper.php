@@ -4,7 +4,7 @@ namespace CryCMS\CURL\Part;
 use CryCMS\CURL\CURL;
 use CryCMS\CURL\DTO\ConfigDTO;
 
-class CUrlHelper
+class Helper
 {
     public static function makeLocation(ConfigDTO $config): string
     {

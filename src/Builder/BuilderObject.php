@@ -5,7 +5,7 @@ use CryCMS\CURL\CURL;
 use CryCMS\CURL\DTO\ConfigDTO;
 use CryCMS\CURL\DTO\ResponseDTO;
 use CryCMS\CURL\Part\ContentType;
-use CryCMS\CURL\Part\CUrlHelper;
+use CryCMS\CURL\Part\Helper;
 use CryCMS\CURL\Part\HTTPCode;
 
 class BuilderObject extends Builder
@@ -22,7 +22,7 @@ class BuilderObject extends Builder
     {
         $this->setInline();
 
-        $location = CUrlHelper::makeLocation($this->config);
+        $location = Helper::makeLocation($this->config);
         curl_setopt($this->curlHandle, CURLOPT_URL, $location);
 
         $this->setHeaders();
@@ -53,6 +53,8 @@ class BuilderObject extends Builder
     {
         curl_setopt($this->curlHandle, CURLOPT_HEADER, false);
         curl_setopt($this->curlHandle, CURLOPT_USERAGENT, $this->config->userAgent);
+        curl_setopt($this->curlHandle, CURLOPT_COOKIEFILE, $this->config->cookieFile);
+        curl_setopt($this->curlHandle, CURLOPT_COOKIEJAR, $this->config->cookieFile);
         curl_setopt($this->curlHandle, CURLOPT_RETURNTRANSFER, $this->config->returnTransfer);
         curl_setopt($this->curlHandle, CURLOPT_FOLLOWLOCATION, $this->config->followLocation);
         curl_setopt($this->curlHandle, CURLOPT_SSL_VERIFYHOST, $this->config->sslVerify ? 2 : 0);
@@ -79,7 +81,7 @@ class BuilderObject extends Builder
 
     protected function setPostData(): void
     {
-        if ($this->config->method !== CUrl::POST) {
+        if ($this->config->method === CUrl::GET) {
             return;
         }
 
