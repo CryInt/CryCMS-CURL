@@ -114,16 +114,11 @@ class CUrl
 
     public function send(): CUrlResponseDTO
     {
-        $builder = new CUrlBuilderObject($this->config);
-        return $builder->execute();
+        return (new CUrlBuilderObject($this->config))->execute();
     }
 
-    /**
-     * @TODO
-     */
-    public function bash(): string
+    public function bash(bool $full = false): string
     {
-        $builder = new CUrlBuilderBash($this->config);
-        return $builder->execute();
+        return (new CUrlBuilderBash($this->config))->execute($full);
     }
 }

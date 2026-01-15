@@ -24,12 +24,24 @@ class CUrlConfigDTO extends CUrlDTO
     protected array $headers = [];
     protected string $userAgent = 'Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1; .NET CLR 1.1.4322; CryCMS cURL Facade)';
     protected array $data = [];
-    protected int $connectTimeout = 30;
-    protected int $timeout = 30;
+    protected int $connectTimeout = 300;
+    protected int $timeout = 300;
     protected bool $followLocation = true;
     protected bool $sslVerify = true;
     protected bool $returnTransfer = true;
     protected bool $noBody = false;
+
+    public function __construct(array $attributes = [])
+    {
+        $properties = get_object_vars($this);
+        foreach ($properties as $property => $value) {
+            if ($property !== 'defaultProperties') {
+                $this->defaultProperties[$property] = $value;
+            }
+        }
+
+        parent::__construct($attributes);
+    }
 
     public function setLocation(string $location): void
     {

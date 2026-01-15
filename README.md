@@ -62,7 +62,7 @@ $response = CURL::get('https://postman-echo.com/get')
     ->send();
 ```
 
-### Send method response always a DTO object
+### Method Send() return always response as an DTO object
 
 ```php
 CURLResponseDTO Object
@@ -75,6 +75,27 @@ CURLResponseDTO Object
     [contentType] => <answer content type>
     [body] => <response body>
 )
+```
+
+### Method Bash() return string for use in CLI
+```php
+$bash = CUrl::post('https://postman-echo.com/post')
+    ->data([
+        'field1' => 'V1',
+        'field2' => 'V2',
+    ])
+    ->file('file', $tmpFile)
+    ->bash();
+```
+
+```bash
+curl 'https://postman-echo.com/post' \
+  --location \
+  --request 'POST' \
+  --header 'Content-Type: multipart/form-data' \
+  --form 'field1=V1' \
+  --form 'field2=V2' \
+  --form 'file=@/tmp/TestFile_YYj8rW.txt;type=text/plain'
 ```
 
 ### UnitTest
