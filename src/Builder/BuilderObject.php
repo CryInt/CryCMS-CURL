@@ -53,6 +53,7 @@ class BuilderObject extends Builder
     {
         curl_setopt($this->curlHandle, CURLOPT_HEADER, false);
         curl_setopt($this->curlHandle, CURLOPT_USERAGENT, $this->config->userAgent);
+        curl_setopt($this->curlHandle, CURLOPT_ENCODING, $this->config->encoding);
         curl_setopt($this->curlHandle, CURLOPT_COOKIEFILE, $this->config->cookieFile);
         curl_setopt($this->curlHandle, CURLOPT_COOKIEJAR, $this->config->cookieFile);
         curl_setopt($this->curlHandle, CURLOPT_RETURNTRANSFER, $this->config->returnTransfer);

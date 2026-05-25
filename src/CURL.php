@@ -136,6 +136,12 @@ class CURL
         return $this;
     }
 
+    public function encoding(string $encoding = ""): self
+    {
+        $this->config->setEncoding($encoding);
+        return $this;
+    }
+
     public function send(): ResponseDTO
     {
         return (new BuilderObject($this->config))->execute();
